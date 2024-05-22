@@ -19,8 +19,8 @@ function myFunction() {
         { name: 'Proposal Seminar', path: 'img/seminar-proposal.jpg' },
         { name: 'Thesis Guidance and Mbkm Research in the Lecturer Room', path: 'img/bimbingan-skripsi-dan-mbkm-riset-di-ruang-dosen.jpg' },
         { name: 'Thesis Guidance & Mbkm Research in the Classroom', path: 'img/bimbingan-skripsi-dan-mbkm-riset-di-ruang-kelas.jpg' },
-        { name: 'Two Researcher Friends Mbkm', path: 'img/dua-teman-mbkm-riset.jpg' },
-        { name: 'Completed The Thesis Trial', path: 'img/selesai-sidang-taman-kampus.jpg' }
+        { name: 'Mbkm Partner', path: 'img/dua-teman-mbkm-riset.jpg' },
+        { name: 'Completed Thesis Exam', path: 'img/selesai-sidang-taman-kampus.jpg' }
     ];
 
     const icons = {
