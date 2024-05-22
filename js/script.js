@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function myFunction() {
     const fileList = document.getElementById('fileList');
     const photoGallery = document.getElementById('photoGallery');
-    const history = document.getElementById('history');
+    const historyDiv = document.getElementById('history');
 
     const files = [
         { name: 'Word, Thesis.docx', path: 'files/word-skripsi.docx' },
@@ -72,33 +72,39 @@ function myFunction() {
         photoGallery.appendChild(imgContainer);
     });
 
-    // Mengirim data ke Google Sheets setiap kali halaman dimuat
+    // Menampilkan formulir untuk mengumpulkan nama pengunjung dan timestamp
+    const formHTML = `
+        <form id="nameForm">
+            <label for="name">Please enter your name if you want my website visitor history and your name will appear below.:</label><br><br>
+            <input type="text" id="name" name="name" required><br><br>
+            <input type="button" value="Submit" onclick="submitName()">
+        </form>
+    `;
+    historyDiv.innerHTML = formHTML;
+}
+
+function submitName() {
+    const name = document.getElementById('name').value;
+    const timestamp = new Date().toISOString();
+
+    // Kirim data ke Google Sheets menggunakan fetch
     fetch('https://script.google.com/macros/s/AKfycbwCLJQCdw4_o7xSTrdu_UFAzgr4fiLDPRRox5aIJ8UNJmte6bZyTf7jIkEx-wdK_pGH/exec', {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: ''
-    }).then(() => {
-        console.log('Visit recorded');
-    }).catch(error => {
+        body: `name=${encodeURIComponent(name)}&timestamp=${encodeURIComponent(timestamp)}`
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Visitor name saved successfully!');
+            document.getElementById('nameForm').reset(); // Reset formulir setelah berhasil dikirim
+        } else {
+            throw new Error('Failed to save visitor name');
+        }
+    })
+    .catch(error => {
         console.error('Error:', error);
+        alert('An error occurred while saving the visitor\'s name');
     });
-
-    // Mengambil data history dari Google Sheets
-    fetch('https://script.google.com/macros/s/AKfycbwCLJQCdw4_o7xSTrdu_UFAzgr4fiLDPRRox5aIJ8UNJmte6bZyTf7jIkEx-wdK_pGH/exec')
-        .then(response => response.json())
-        .then(data => {
-            if (Array.isArray(data)) {
-                data.forEach(entry => {
-                    const entryElement = document.createElement('p');
-                    entryElement.textContent = `Email: ${entry.email}, Timestamp: ${entry.timestamp}`;
-                    history.appendChild(entryElement);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
 }
