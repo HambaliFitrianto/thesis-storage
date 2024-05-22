@@ -108,3 +108,4 @@ function submitName() {
         alert('An error occurred while saving the visitor\'s name');
     });
 }
+
